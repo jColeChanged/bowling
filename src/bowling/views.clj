@@ -192,12 +192,13 @@
 (listen add-game-button
   :action add-game-handler))
 
-(invoke-later
- (config! root :content 
-	  (mig-panel :constraints ["ins 5" "" ""]
-	       :items [[add-game-panel "top"] [scores-chart-panel "wrap"]]))
- (-> root show! pack!))
-
+(defn start-app []
+  (invoke-later
+   (config! root :content 
+	    (mig-panel :constraints ["ins 5" "" ""]
+		       :items [[add-game-panel "top"]
+			       [scores-chart-panel "wrap"]]))
+   (-> root show! pack!)))
 
 
 

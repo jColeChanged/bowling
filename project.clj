@@ -6,4 +6,5 @@
 		 [incanter "1.3.0"]
 		 [com.github.insubstantial/substance "7.1"]
 		 [korma "0.3.0-beta9"]
-		 [org.xerial/sqlite-jdbc "3.6.16"]])
+		 [org.xerial/sqlite-jdbc "3.6.16"]]
+  :main bowling.main)

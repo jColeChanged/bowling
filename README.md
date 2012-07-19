@@ -4,11 +4,14 @@ My family is a family of bowlers. One of them wanted software to track their bow
 
 ## Usage
 
-git clone url
-cd bowling
-lein deps
-lein compile
-java thejar
+Assuming you have both lein and git installed you ca see the app with:
+
+
+    git clone https://github.com/jColeChanged/bowling.git
+    cd bowling
+    lein deps
+    lein compile
+    lein run
 
 ## License
 
