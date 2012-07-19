@@ -192,14 +192,13 @@
 (listen add-game-button
   :action add-game-handler))
 
-(defn start-app []
+(defn start-app [& options]
   (invoke-later
    (config! root :content 
 	    (mig-panel :constraints ["ins 5" "" ""]
 		       :items [[add-game-panel "top"]
 			       [scores-chart-panel "wrap"]]))
+   (when options 
+     (doseq [option (apply hash-map options)]
+       (config! root (first option) (second option))))
    (-> root show! pack!)))
-
-
-
-

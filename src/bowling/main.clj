@@ -3,4 +3,4 @@
   (:gen-class))
 
 (defn -main [& rest]
-  (start-app))
+  (start-app :on-close :exit))
