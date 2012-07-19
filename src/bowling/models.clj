@@ -53,8 +53,9 @@
 			 [:game_count :integer])))
     (catch Exception e (println e))))
 
+;; Set up the database.
 (defdb production db-specs)
-
+(create-game-table)
 ;; When displaying charts we want games played on the same date to all be
 ;; displayed instead of having them all stack up on each other. Having them
 ;; be spread throughout the day as far as they can be would also be nice, as
