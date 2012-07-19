@@ -46,19 +46,19 @@
 	 :chart-date :pins
 	 :title (str "Scores from " (date-to-string date-from) " to " 
 		     (date-to-string date-to))
-	 :x-label "Days"
+	 :x-label "Date"
 	 :y-label "Pins"
 	 :data (to-dataset 
 		(db/select games (db/where
 				  (and (<= date-from :date)
-				       (<= :date date-to))))))
+				       (< :date date-to))))))
     (-> .getPlot
-	.getRangeAxis
-	(.setRange 0 300))
+    	.getRangeAxis
+    	(.setRange 0 300))
     (-> .getPlot
-	.getDomainAxis
-	(.setRange (org.jfree.data.time.DateRange. (tc/to-date date-from)
-						   (tc/to-date date-to))))))
+    	.getDomainAxis
+    	(.setRange (org.jfree.data.time.DateRange. (tc/to-date date-from)
+    						   (tc/to-date date-to))))))
 
 (defn create-panel
   ([chart & options]
@@ -78,29 +78,31 @@
      
 (invoke-later
 (def root (frame :title "Bowling Score Tracker"))
+(def date-from-field (text :id :date-from
+			   :text (date-to-string default-from-date)
+			   :columns 10
+			   :tip "YYYY-MM-DD"))
+
+(def date-to-field (text :id :date-to
+			 :text (date-to-string default-to-date)
+			 :columns 10
+			 :tip "YYYY-MM-DD"))
+
 (def date-range-form
-  (let [date-from-field (text :id :date-from
-			      :text (date-to-string default-from-date)
-			      :columns 10
-			      :tip "YYYY-MM-DD")
-	date-to-field (text :id :date-to
-			    :text (date-to-string default-to-date)
-			    :columns 10
-			    :tip "YYYY-MM-DD")
-	date-range-button (button :text "Render")
-	_ (listen (.getDocument date-to-field)
-	    :document (fn [e]
-			(if-let [date (date-validator? date-to-field)]
-			  (config! date-to-field :class "")
-			  (config! date-to-field :class "validation-error"))
-			(apply-stylesheet root styles)))
-	_ (listen (.getDocument date-from-field)
+     (let [date-range-button (button :text "Render")
+	   _ (listen (.getDocument date-to-field)
+	     :document (fn [e]
+			 (if-let [date (date-validator? date-to-field)]
+			   (config! date-to-field :class "")
+			   (config! date-to-field :class "validation-error"))
+			 (apply-stylesheet root styles)))
+	   _ (listen (.getDocument date-from-field)
 	    :document (fn [e]
 			(if-let [date (date-validator? date-from-field)]
 			  (config! date-from-field :class "")
 			  (config! date-from-field :class "validation-error"))
 			(apply-stylesheet root styles)))
-	_ (listen date-range-button
+	   _ (listen date-range-button
 	    :action (fn [e]
 		      (try (.setChart (first (select root [:ChartPanel]))
 				      (create-chart

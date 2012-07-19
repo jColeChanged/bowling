@@ -6,6 +6,8 @@
 	   org.jfree.data.xy.XYSeriesCollection  
 	   org.jfree.chart.axis.DateAxis))
 
+(defmethod to-list :default [s]  (if (seq? s) s (list s)))
+
 (def date-axis (DateAxis.))
 (defn scatter-plot**
   ([x y & options]
@@ -66,4 +68,3 @@
 
 (defn time-scatter-plot [& args]
   (apply scatter-plot** args))
-
