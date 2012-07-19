@@ -1,53 +1,12 @@
 (ns bowling.charts
-  (:use [incanter.core])
-  (:use [incanter.charts])
-  (:require [clj-time.core :as time])
-  (:require [clj-time.coerce :as coerce-time]))
+  (:use [incanter core charts])
+  (:require [clj-time.core :as time]
+	    [clj-time.coerce :as coerce-time])
+  (:import org.jfree.data.xy.XYSeries
+	   org.jfree.data.xy.XYSeriesCollection  
+	   org.jfree.chart.axis.DateAxis))
 
-;; Create some fake data to play with
-
-(defn rand-date []
-  (time/plus (time/now) (time/days (rand-int 10))))
-
-(defn create-game-record []
-  (let [date (rand-date)]
-    [(rand-int 301) date (coerce-time/to-long date)]))
-
-(def games (repeatedly 10 create-game-record))
-
-;; Now that we have some games lets try to put those games in a dataset...
-
-(def games-dataset (dataset [:pins :date :ms] games))
-
-;; Now that we have some data lets seeif we can display what we have in a chart
-
-;; This takes the dataset and returns a different dataset which has been sorted
-;; should be pretty clear what is happening...
-
-(def chart (scatter-plot :pins :ms :data games-dataset))
-
-;; (view (time-series-plot :ms :pins 
-;; 			:title   "Scores for period"
-;; 			:y-label "Score"
-;; 			:x-label "Days"
-;; 			:data games-dataset))
-
-
-(import 'org.jfree.data.xy.XYSeries)
-(import 'org.jfree.chart.axis.DateAxis)
-(import 'org.jfree.chart.axis.DateTickUnit)
-(import 'org.jfree.chart.axis.NumberAxis)
-(import 'org.jfree.data.xy.XYSeriesCollection)
-
-(def data-series (XYSeries. "Game scores from x to y"))
-(def date-axis (DateAxis. "Days"))
-(def unit (DateTickUnit. DateTickUnit/DAY 1))
-;; (.setTickUnit date-axis unit)
-(def num-axis (NumberAxis. "Pins"))
-(def renderer (org.jfree.chart.renderer.xy.XYBlockRenderer.))
-(def xy-dataset (XYSeriesCollection. data-series))
-(def plot (org.jfree.chart.plot.XYPlot. xy-dataset date-axis num-axis renderer))
-
+(def date-axis (DateAxis.))
 (defn scatter-plot**
   ([x y & options]
     (let [opts (when options (apply assoc {} options))
@@ -108,8 +67,3 @@
 (defn time-scatter-plot [& args]
   (apply scatter-plot** args))
 
-   ;; :ms :pins 
-   ;; 		  :x-label "Days" 
-   ;; 		  :y-label "Score" 
-   ;; 		  :series-label "Game Scores from x to y"
-   ;; 		  :data games-dataset))
