@@ -141,6 +141,10 @@
 			[(scrollable recently-added-table :size [280 :by 82]) 
 			 "span, align center"]]))
 
+(defn score-validator? [text-field]
+  (try (<= 0 (Integer/parseInt (value text-field)) 300)
+       (catch NumberFormatException e nil)))
+
 (defn enable-add-game-button []
   (config! add-game-button :enabled? 
 	   (and (date-validator? add-game-date-field) 
@@ -194,9 +198,7 @@
 	       :items [[add-game-panel "top"] [scores-chart-panel "wrap"]]))
  (-> root show! pack!))
 
-(defn score-validator? [text-field]
-  (try (<= 0 (Integer/parseInt (value text-field)) 300)
-       (catch NumberFormatException e nil)))
+
 
 
 
