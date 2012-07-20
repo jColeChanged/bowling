@@ -13,8 +13,12 @@
   ([x y & options]
     (let [opts (when options (apply assoc {} options))
           data (:data opts)
-          _x (if (coll? x) (to-list x) ($ x data))
-          _y (if (coll? y) (to-list y) ($ y data))
+          _x (if (coll? x) (to-list x) 
+		 (if-let [x-list (sel data :cols x)]
+		   (if (seq? x-list) x-list (list x-list))))
+	  _y (if (coll? y) (to-list y) 
+		 (if-let [y-list (sel data :cols y)]
+		   (if (seq? y-list) y-list (list y-list))))
           _group-by (when (:group-by opts)
                       (if (coll? (:group-by opts))
                         (to-list (:group-by opts))
