@@ -4,7 +4,7 @@ My family is a family of bowlers. One of them wanted software to track their bow
 
 ## Usage
 
-Assuming you have both lein and git installed you ca see the app with:
+Assuming you have both lein and git installed you can see the app with:
 
 
     git clone https://github.com/jColeChanged/bowling.git
